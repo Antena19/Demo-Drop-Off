@@ -1,0 +1,456 @@
+<div class="mx-auto max-w-7xl space-y-5 animate-fade-in">
+  @if (demo.escenario() === 'networkDown') {
+    <div
+      class="flex items-center gap-3 rounded-xl border border-rose-400 bg-rose-600 px-4 py-3 text-sm font-medium text-white shadow-md"
+    >
+      <span class="inline-flex h-2 w-2 shrink-0 animate-pulse rounded-full bg-white"></span>
+      Sin conexión con el servidor. Intentando reconectar… · El sistema suspende la actualización de tiempos en zona hasta restablecer el enlace.
+    </div>
+  }
+
+  <!-- Barra estado general -->
+  <div
+    class="flex flex-col gap-2 rounded-2xl border px-4 py-3 shadow-sm sm:flex-row sm:items-center sm:justify-between"
+    [ngClass]="bandaClase(demo.bandaEstado())"
+  >
+    <div class="flex items-center gap-3">
+      <span
+        class="h-2.5 w-2.5 shrink-0 rounded-full bg-current opacity-80 animate-pulse-soft"
+      ></span>
+      <div>
+        <p class="text-sm font-bold">{{ demo.tituloBandaEstado() }}</p>
+        @if (demo.subtituloBandaEstado()) {
+          <p class="text-xs opacity-90">{{ demo.subtituloBandaEstado() }}</p>
+        }
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2 text-[10px] font-semibold uppercase tracking-wide opacity-90">
+      <span>Operativo</span>
+      <span>·</span>
+      <span>Monitoreando</span>
+      <span>·</span>
+      <span>Advertencia</span>
+      <span>·</span>
+      <span>Error</span>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-4 xl:flex-row xl:items-start">
+    <!-- Panel escenarios -->
+    <aside
+      class="shrink-0 space-y-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-card xl:w-80"
+    >
+      <h3 class="text-sm font-semibold text-slate-900">Escenarios operativos</h3>
+      <p class="text-xs text-slate-500">
+        Active un tipo de evento para ver el comportamiento del sistema y las alertas asociadas.
+      </p>
+      <label class="block text-xs font-medium text-slate-600" for="esc">Escenario</label>
+      <select
+        id="esc"
+        name="esc"
+        [(ngModel)]="escenarioSeleccionado"
+        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100"
+      >
+        @for (op of escenarios; track op.id) {
+          <option [ngValue]="op.id">{{ op.label }}</option>
+        }
+      </select>
+      <button
+        type="button"
+        (click)="aplicarEscenarioSeleccionado()"
+        class="w-full rounded-xl bg-brand-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+      >
+        Ejecutar escenario
+      </button>
+      <p class="text-[11px] text-slate-400">
+        Escenario activo:
+        <span class="font-mono text-slate-600">{{ demo.escenario() }}</span>
+      </p>
+    </aside>
+
+    <div class="min-w-0 flex-1 space-y-4">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 class="font-display text-2xl font-semibold text-slate-900">Monitoreo en vivo · Drop Off</h2>
+          <p class="text-sm text-slate-500">
+            Cámaras y control de permanencia de vehículos en zona Drop Off.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button
+            type="button"
+            (click)="demo.simularIngresoVehiculo()"
+            class="rounded-xl bg-brand-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-brand-700"
+          >
+            Registrar ingreso vehículo
+          </button>
+          <button
+            type="button"
+            (click)="demo.simularSalidaVehiculo()"
+            class="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50"
+          >
+            Registrar salida vehículo
+          </button>
+          <button
+            type="button"
+            (click)="demo.simularInfraccionManual()"
+            class="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-800 hover:bg-rose-100"
+          >
+            Registrar infracción
+          </button>
+          <button
+            type="button"
+            (click)="demo.reiniciarSimulacion()"
+            class="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+          >
+            Restablecer monitoreo
+          </button>
+        </div>
+      </div>
+
+      @if (demo.alertasEscenario().length) {
+        <div
+          class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950 shadow-sm"
+        >
+          @for (a of demo.alertasEscenario(); track a) {
+            <p class="text-sm leading-relaxed">{{ a }}</p>
+          }
+        </div>
+      }
+
+      @if (vehiculosPendientesIdentificar().length) {
+        <div
+          class="space-y-3 rounded-2xl border-2 border-amber-400 bg-gradient-to-b from-amber-50 to-white p-4 shadow-md"
+          role="status"
+        >
+          <p class="text-[11px] font-bold uppercase tracking-wide text-amber-900/90">
+            Acción requerida · patente sin datos en el colegio
+          </p>
+          @for (v of vehiculosPendientesIdentificar(); track v.id) {
+            <div
+              class="flex flex-col gap-3 rounded-xl border border-amber-200/90 bg-white p-4 shadow-sm sm:flex-row sm:items-stretch sm:justify-between sm:gap-4"
+            >
+              <div class="min-w-0 flex-1 space-y-2">
+                <p class="text-base font-semibold leading-snug text-slate-900">
+                  La patente
+                  <span class="font-mono text-brand-800">{{ v.patente }}</span>
+                  no está en nuestra base de datos.
+                </p>
+                <p class="text-sm text-slate-600">
+                  ¿De quién es este vehículo? Elija a la persona y pulse
+                  <span class="font-semibold text-slate-800">Identificar</span>.
+                </p>
+                <p class="text-xs text-slate-500">
+                  Hasta que confirme, no se envían avisos ni multas automáticas por esta patente.
+                </p>
+              </div>
+              <div class="flex w-full shrink-0 flex-col gap-2 sm:w-80">
+                <label class="sr-only" [attr.for]="'sel-banner-' + v.id">Apoderado</label>
+                <select
+                  [id]="'sel-banner-' + v.id"
+                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+                  [value]="elegidoApoderadoPorVehiculo[v.id] ?? ''"
+                  (change)="onElegidoVehiculoChange(v.id, $event)"
+                >
+                  <option value="">— Elija apoderado —</option>
+                  @for (ap of demo.apoderados(); track ap.id) {
+                    <option [value]="ap.id">{{ ap.nombre }}</option>
+                  }
+                </select>
+                <label class="flex cursor-pointer items-center gap-2 text-xs text-slate-600">
+                  <input
+                    type="checkbox"
+                    class="h-4 w-4 accent-brand-600"
+                    [checked]="guardarPatenteAlVincular(v.id)"
+                    (change)="onGuardarPatenteVinculo(v.id, $event)"
+                  />
+                  Guardar esta patente en la ficha del apoderado
+                </label>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    (click)="confirmarVinculo(v.id)"
+                    class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-700"
+                  >
+                    Identificar
+                  </button>
+                  <button
+                    type="button"
+                    (click)="irAFilaVehiculo(v.id)"
+                    class="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                  >
+                    Ver fila en tabla
+                  </button>
+                  <a
+                    routerLink="/apoderados"
+                    class="inline-flex items-center rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-900 hover:bg-brand-100"
+                  >
+                    Abrir fichas de apoderados
+                  </a>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (hayInfraccion()) {
+        <div
+          class="flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900 shadow-sm animate-fade-in"
+        >
+          <span
+            class="mt-0.5 inline-flex h-8 w-8 items-center justify-center rounded-xl bg-rose-100 text-rose-700"
+            >!</span
+          >
+          <div>
+            <p class="font-semibold">Alerta de infracción activa</p>
+            <p class="text-xs text-rose-800/90">
+              Uno o más vehículos superaron el tiempo máximo ({{ config.tiempoMaxMinutos() }} min).
+            </p>
+          </div>
+        </div>
+      }
+
+      <!-- Tarjetas estado -->
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+          <p class="text-[10px] font-semibold uppercase text-slate-500">Cámara Norte</p>
+          <p class="mt-1 text-sm font-semibold text-slate-900">{{ demo.estadoCamaraNorteEtiqueta() }}</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+          <p class="text-[10px] font-semibold uppercase text-slate-500">Cámara Sur</p>
+          <p class="mt-1 text-sm font-semibold text-slate-900">{{ demo.estadoCamaraSurEtiqueta() }}</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+          <p class="text-[10px] font-semibold uppercase text-slate-500">Precisión IA (indicador)</p>
+          <p class="mt-1 text-sm font-semibold text-brand-800">{{ demo.precisionIa() }}%</p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+          <p class="text-[10px] font-semibold uppercase text-slate-500">Conexión de red</p>
+          <p class="mt-1 text-sm font-semibold" [ngClass]="demo.conexionEstable() ? 'text-emerald-700' : 'text-rose-700'">
+            {{ demo.conexionEstable() ? 'Estable' : 'Interrumpida' }}
+          </p>
+        </div>
+        <div class="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+          <p class="text-[10px] font-semibold uppercase text-slate-500">Notificaciones</p>
+          <p class="mt-1 text-sm font-semibold text-slate-900">{{ demo.notificacionesEnviadas() }} enviadas</p>
+          @if (demo.escenario() === 'networkDown') {
+            <p class="mt-0.5 text-[10px] text-rose-600">No se generan nuevas mientras dure el evento.</p>
+          }
+        </div>
+      </div>
+
+      <!-- Cámaras -->
+      <div class="grid gap-4 lg:grid-cols-2">
+        <div
+          class="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-900 shadow-card"
+        >
+          <div class="flex items-center justify-between border-b border-white/10 px-4 py-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-300">Cámara Norte</p>
+            <span
+              class="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+              [ngClass]="
+                config.camaraNorteActiva()
+                  ? 'bg-emerald-500/20 text-emerald-300'
+                  : 'bg-rose-500/25 text-rose-200'
+              "
+            >
+              {{ config.camaraNorteActiva() ? 'LIVE' : 'OFF' }}
+            </span>
+          </div>
+          <div
+            class="relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-slate-800 via-slate-900 to-brand-900/40 {{ wrapperVideo('norte') }}"
+          >
+            @if (config.camaraNorteActiva() && !errorVideoNorte()) {
+              <video
+                class="absolute inset-0 h-full w-full object-cover"
+                [src]="videoNorteSrc"
+                muted
+                playsinline
+                loop
+                autoplay
+                preload="auto"
+                (error)="onErrorVideoNorte()"
+                (loadeddata)="mantenerVideoNorte($event)"
+                (canplay)="mantenerVideoNorte($event)"
+                (ended)="mantenerVideoNorte($event)"
+              ></video>
+            }
+            @if (!config.camaraNorteActiva() || errorVideoNorte()) {
+              <div class="offline-placeholder relative z-10 flex flex-col items-center px-4 text-center text-slate-200">
+                <span class="text-3xl text-slate-500">⚠</span>
+                <p class="mt-2 text-xs uppercase tracking-[0.2em] text-slate-400">Señal no disponible</p>
+                <p class="mt-1 font-display text-lg font-semibold text-slate-200">Cámara Norte</p>
+                @if (!config.camaraNorteActiva()) {
+                  <p class="mt-2 text-[11px] leading-relaxed text-amber-100/95">
+                    <span class="font-semibold">Aviso operativo:</span> sin señal en este canal. El
+                    sistema continúa con la otra cámara. Verificar alimentación, cableado y red en el
+                    punto de instalación; tomar medidas de contingencia en el sector cubierto por
+                    esta cámara.
+                  </p>
+                } @else {
+                  <p class="mt-2 text-[11px] text-slate-400">
+                    Coloque
+                    <span class="font-mono text-slate-300">public/videos/camaras/camaraNorte.mp4</span>
+                  </p>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div
+          class="overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-900 shadow-card"
+        >
+          <div class="flex items-center justify-between border-b border-white/10 px-4 py-2">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-300">Cámara Sur</p>
+            <span
+              class="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+              [ngClass]="
+                config.camaraSurActiva()
+                  ? 'bg-emerald-500/20 text-emerald-300'
+                  : 'bg-rose-500/25 text-rose-200'
+              "
+            >
+              {{ config.camaraSurActiva() ? 'LIVE' : 'OFF' }}
+            </span>
+          </div>
+          <div
+            class="relative flex aspect-video items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900/40 {{ wrapperVideo('sur') }}"
+          >
+            @if (config.camaraSurActiva() && !errorVideoSur()) {
+              <video
+                class="absolute inset-0 h-full w-full object-cover"
+                [src]="videoSurSrc"
+                muted
+                playsinline
+                loop
+                autoplay
+                preload="auto"
+                (error)="onErrorVideoSur()"
+                (loadeddata)="mantenerVideoSur($event)"
+                (canplay)="mantenerVideoSur($event)"
+                (ended)="mantenerVideoSur($event)"
+              ></video>
+            }
+            @if (!config.camaraSurActiva() || errorVideoSur()) {
+              <div class="offline-placeholder relative z-10 flex flex-col items-center px-4 text-center text-slate-200">
+                <span class="text-3xl text-slate-500">⚠</span>
+                <p class="mt-2 text-xs uppercase tracking-[0.2em] text-slate-400">Señal no disponible</p>
+                <p class="mt-1 font-display text-lg font-semibold">Cámara Sur</p>
+                @if (!config.camaraSurActiva()) {
+                  <p class="mt-2 text-[11px] leading-relaxed text-amber-100/95">
+                    <span class="font-semibold">Aviso operativo:</span> sin señal en este canal. El
+                    sistema continúa con la otra cámara. Verificar alimentación, cableado y red en el
+                    punto de instalación; tomar medidas de contingencia en el sector cubierto por
+                    esta cámara.
+                  </p>
+                } @else {
+                  <p class="mt-2 text-[11px] text-slate-400">
+                    Coloque
+                    <span class="font-mono text-slate-300">public/videos/camaras/camara-sur.mp4</span>
+                  </p>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla tiempo real (destino del aviso de patentes pendientes) -->
+      <div
+        id="tabla-vehiculos-zona"
+        class="scroll-mt-6 rounded-2xl border border-slate-200/80 bg-white shadow-card sm:scroll-mt-8"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 px-4 py-3 sm:px-5">
+          <h3 class="text-sm font-semibold text-slate-900">Vehículos en zona</h3>
+          <span class="text-xs text-slate-500">Umbral: {{ config.tiempoMaxMinutos() }} min</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-left text-sm">
+            <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <tr>
+                <th class="px-4 py-3">Patente</th>
+                <th class="px-4 py-3">Apoderado</th>
+                <th class="px-4 py-3">Hora ingreso</th>
+                <th class="px-4 py-3">Tiempo detenido</th>
+                <th class="px-4 py-3 hidden sm:table-cell">Cámara</th>
+                <th class="px-4 py-3 hidden lg:table-cell">N° captura</th>
+                <th class="px-4 py-3 min-w-[11rem]">Identificar</th>
+                <th class="px-4 py-3">Estado</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              @if (!demo.vehiculosLive().length) {
+                <tr>
+                  <td colspan="8" class="px-4 py-8 text-center text-sm text-slate-500">
+                    Sin vehículos en zona. Use ingreso de prueba o el escenario de congestión para poblar la tabla.
+                  </td>
+                </tr>
+              }
+              @for (v of demo.vehiculosLive(); track v.id) {
+                <tr
+                  [id]="'fila-vehiculo-' + v.id"
+                  class="hover:bg-slate-50/80"
+                  [ngClass]="filaPendienteClases(v)"
+                >
+                  <td class="px-4 py-3 font-mono text-xs font-semibold text-slate-900">{{ v.patente }}</td>
+                  <td class="px-4 py-3 text-slate-700">{{ v.apoderado }}</td>
+                  <td class="px-4 py-3 text-xs text-slate-600">{{ v.horaIngreso | date: 'shortTime' }}</td>
+                  <td class="px-4 py-3 font-mono text-xs text-slate-800">{{ formatTiempo(v.segundosDetenido) }}</td>
+                  <td class="px-4 py-3 text-xs text-slate-500 hidden sm:table-cell">{{ v.camara }}</td>
+                  <td class="px-4 py-3 font-mono text-[10px] text-slate-600 hidden lg:table-cell">
+                    {{ v.evidenciaId ?? '—' }}
+                  </td>
+                  <td class="px-4 py-3 align-top text-slate-700">
+                    @if (v.requiereValidacionPatente) {
+                      <div class="flex max-w-[14rem] flex-col gap-2">
+                        <select
+                          class="w-full rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-800 outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-200"
+                          [value]="elegidoApoderadoPorVehiculo[v.id] ?? ''"
+                          (change)="onElegidoVehiculoChange(v.id, $event)"
+                          [attr.name]="'ap-v-' + v.id"
+                        >
+                          <option value="">— Elija apoderado —</option>
+                          @for (ap of demo.apoderados(); track ap.id) {
+                            <option [value]="ap.id">{{ ap.nombre }}</option>
+                          }
+                        </select>
+                        <label class="flex cursor-pointer items-start gap-2 text-[11px] leading-snug text-slate-600">
+                          <input
+                            type="checkbox"
+                            class="mt-0.5 h-3.5 w-3.5 shrink-0 accent-brand-600"
+                            [checked]="guardarPatenteAlVincular(v.id)"
+                            (change)="onGuardarPatenteVinculo(v.id, $event)"
+                          />
+                          Guardar esta patente en la ficha del apoderado
+                        </label>
+                        <button
+                          type="button"
+                          (click)="confirmarVinculo(v.id)"
+                          class="rounded-lg bg-brand-600 px-2.5 py-1.5 text-[11px] font-semibold text-white shadow-sm hover:bg-brand-700"
+                        >
+                          Identificar
+                        </button>
+                      </div>
+                    } @else {
+                      <span class="text-xs text-slate-300">—</span>
+                    }
+                  </td>
+                  <td class="px-4 py-3">
+                    <span
+                      class="inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset"
+                      [ngClass]="badgeClass(v.estado)"
+                    >
+                      {{ etiquetaEstado(v.estado) }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

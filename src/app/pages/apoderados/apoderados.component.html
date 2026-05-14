@@ -1,0 +1,142 @@
+<div class="mx-auto max-w-6xl space-y-6 animate-fade-in">
+  <div>
+    <h2 class="font-display text-2xl font-semibold text-slate-900">Apoderados y vehículos</h2>
+    <p class="text-sm text-slate-500">
+      Registro de apoderados y patentes autorizadas para ingreso al área Drop Off.
+    </p>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-5">
+    <div class="lg:col-span-2 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-card">
+      <h3 class="text-sm font-semibold text-slate-900">
+        {{ editingId() ? 'Editar registro' : 'Nuevo registro' }}
+      </h3>
+      <div class="mt-4 space-y-3">
+        <div>
+          <label class="text-xs font-medium text-slate-600">Nombre apoderado</label>
+          <input
+            [(ngModel)]="form.nombre"
+            name="nombre"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">RUT</label>
+          <input
+            [(ngModel)]="form.rut"
+            name="rut"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Estudiante</label>
+          <input
+            [(ngModel)]="form.estudiante"
+            name="estudiante"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Curso</label>
+          <input
+            [(ngModel)]="form.curso"
+            name="curso"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Correo</label>
+          <input
+            [(ngModel)]="form.correo"
+            name="correo"
+            type="email"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-medium text-slate-600">Patente vehículo</label>
+          <input
+            [(ngModel)]="form.patente"
+            name="patente"
+            class="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm uppercase outline-none ring-brand-100 focus:border-brand-400 focus:ring-4"
+          />
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2">
+        @if (!editingId()) {
+          <button
+            type="button"
+            (click)="agregar()"
+            class="rounded-xl bg-brand-600 px-4 py-2 text-xs font-semibold text-white hover:bg-brand-700"
+          >
+            Agregar
+          </button>
+        } @else {
+          <button
+            type="button"
+            (click)="guardarEdicion()"
+            class="rounded-xl bg-brand-600 px-4 py-2 text-xs font-semibold text-white hover:bg-brand-700"
+          >
+            Guardar cambios
+          </button>
+          <button
+            type="button"
+            (click)="cancelar()"
+            class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            Cancelar
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="lg:col-span-3 rounded-2xl border border-slate-200/80 bg-white shadow-card">
+      <div class="border-b border-slate-100 px-4 py-3">
+        <h3 class="text-sm font-semibold text-slate-900">Registros</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-3 py-2">Apoderado</th>
+              <th class="px-3 py-2">RUT</th>
+              <th class="px-3 py-2 hidden md:table-cell">Estudiante</th>
+              <th class="px-3 py-2">Curso</th>
+              <th class="px-3 py-2 hidden lg:table-cell">Correo</th>
+              <th class="px-3 py-2">Patente</th>
+              <th class="px-3 py-2 text-right">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (row of demo.apoderados(); track row.id) {
+              <tr class="hover:bg-slate-50/80">
+                <td class="px-3 py-2 font-medium text-slate-900">{{ row.nombre }}</td>
+                <td class="px-3 py-2 text-xs text-slate-600">{{ row.rut }}</td>
+                <td class="px-3 py-2 text-xs text-slate-600 hidden md:table-cell">{{ row.estudiante }}</td>
+                <td class="px-3 py-2 text-xs">{{ row.curso }}</td>
+                <td class="px-3 py-2 text-xs text-slate-500 hidden lg:table-cell">{{ row.correo }}</td>
+                <td class="px-3 py-2 font-mono text-xs font-semibold">{{ row.patente }}</td>
+                <td class="px-3 py-2 text-right">
+                  <button
+                    type="button"
+                    (click)="editar(row)"
+                    class="mr-1 rounded-lg border border-slate-200 px-2 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-50"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    type="button"
+                    (click)="eliminar(row)"
+                    class="rounded-lg border border-rose-200 bg-rose-50 px-2 py-1 text-[11px] font-semibold text-rose-800 hover:bg-rose-100"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

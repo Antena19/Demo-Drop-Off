@@ -1,0 +1,47 @@
+/* Efectos visuales (clima / modo) sobre el feed de video */
+.rain-mode::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(100, 120, 160, 0.35),
+    rgba(30, 40, 60, 0.45)
+  );
+  mix-blend-mode: multiply;
+  animation: rain-drift 1.2s linear infinite;
+}
+
+.rain-mode {
+  filter: brightness(0.82) saturate(0.75);
+}
+
+@keyframes rain-drift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 40px;
+  }
+}
+
+.fog-mode::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(2px);
+}
+
+.fog-mode {
+  filter: contrast(0.92) brightness(1.08);
+}
+
+.night-mode {
+  filter: brightness(0.4) contrast(1.2);
+}
+
+.offline-mode {
+  filter: grayscale(1) brightness(0.35);
+}

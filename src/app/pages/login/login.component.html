@@ -1,0 +1,65 @@
+<div
+  class="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-slate-100 via-white to-brand-50 px-4 py-10"
+>
+  <div
+    class="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-brand-200/40 blur-3xl"
+  ></div>
+  <div
+    class="pointer-events-none absolute -right-20 bottom-0 h-80 w-80 rounded-full bg-indigo-200/35 blur-3xl"
+  ></div>
+
+  <div
+    class="relative w-full max-w-md animate-fade-in rounded-3xl border border-slate-200/80 bg-white/90 p-8 shadow-card backdrop-blur"
+  >
+    <div class="mb-8 text-center">
+      <div
+        class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-xl font-display font-bold text-white shadow-lg"
+      >
+        GT
+      </div>
+      <h1 class="font-display text-xl font-semibold text-slate-900">
+        Sistema Inteligente Drop Off
+      </h1>
+      <p class="mt-1 text-sm text-slate-500">Colegio Genios Traviesos</p>
+      <p class="mt-4 text-sm leading-relaxed text-slate-600">
+        Sistema de monitoreo inteligente del área Drop Off
+      </p>
+    </div>
+
+    <form class="space-y-4" (ngSubmit)="ingresar()">
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600" for="u">Usuario</label>
+        <input
+          id="u"
+          name="u"
+          [(ngModel)]="usuario"
+          class="w-full rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-2.5 text-sm outline-none ring-brand-200 transition focus:border-brand-400 focus:bg-white focus:ring-4"
+          placeholder="Ej. operador.norte"
+          autocomplete="username"
+        />
+      </div>
+      <div>
+        <label class="mb-1 block text-xs font-medium text-slate-600" for="p">Contraseña</label>
+        <input
+          id="p"
+          name="p"
+          type="password"
+          [(ngModel)]="clave"
+          class="w-full rounded-xl border border-slate-200 bg-slate-50/80 px-3 py-2.5 text-sm outline-none ring-brand-200 transition focus:border-brand-400 focus:bg-white focus:ring-4"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </div>
+      <button
+        type="submit"
+        class="mt-2 w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 py-2.5 text-sm font-semibold text-white shadow-md transition hover:brightness-105 active:scale-[0.99]"
+      >
+        Ingresar
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-[11px] text-slate-400">
+      Ingrese usuario y contraseña asignados. La validación se realiza en el puesto de monitoreo.
+    </p>
+  </div>
+</div>

@@ -1,0 +1,190 @@
+<div class="flex min-h-screen bg-slate-50 text-slate-800">
+  <!-- Sidebar -->
+  <aside
+    class="hidden w-64 shrink-0 border-r border-slate-200/80 bg-white/90 shadow-sm backdrop-blur lg:flex lg:flex-col"
+  >
+    <div class="border-b border-slate-100 px-5 py-6">
+      <div class="flex items-center gap-3">
+        <div
+          class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-lg font-display font-bold text-white shadow-md"
+        >
+          GT
+        </div>
+        <div>
+          <p class="font-display text-sm font-semibold text-slate-900">Genios Traviesos</p>
+          <p class="text-xs text-slate-500">Drop Off inteligente</p>
+        </div>
+      </div>
+    </div>
+    <nav class="flex flex-1 flex-col gap-1 px-3 py-4">
+      @for (item of nav; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="bg-brand-50 text-brand-800 ring-1 ring-brand-100"
+          class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+        >
+          @switch (item.icon) {
+            @case ('grid') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-width="1.6" d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z" />
+                </svg>
+              </span>
+            }
+            @case ('cam') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-width="1.6"
+                    d="M4 7h4l2-2h4l2 2h4v11H4V7zm8 3a3 3 0 100 6 3 3 0 000-6z"
+                  />
+                </svg>
+              </span>
+            }
+            @case ('users') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-width="1.6"
+                    d="M8 11a3 3 0 100-6 3 3 0 000 6zm8-1a2 2 0 100-4 2 2 0 000 4zm-8 6c-3 0-4 1.5-4 3v1h8v-1c0-1.5-1-3-4-3zm8 1h6v-1c0-1.2-.9-2-3-2.2"
+                  />
+                </svg>
+              </span>
+            }
+            @case ('alert') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-width="1.6" d="M12 6v7m0 4h.01M5 5l14 14" />
+                </svg>
+              </span>
+            }
+            @case ('sim') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-width="1.6"
+                    d="M4 14c2-4 6-6 8-8 2 2 6 4 8 8M4 18h16M6 10l2 2m8-2l2 2"
+                  />
+                </svg>
+              </span>
+            }
+            @case ('gear') {
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-600">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    stroke-width="1.6"
+                    d="M12 8a4 4 0 100 8 4 4 0 000-8zm7 4h2m-2 0l-1.2 3M19 12l-3 .6M12 5v2m0 12v2m-7-7H3m3.6-3L5 12m3.6 3L8 19"
+                  />
+                </svg>
+              </span>
+            }
+          }
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+    <div class="mt-auto border-t border-slate-100 px-5 py-4 text-xs text-slate-500">
+      Sistema Drop Off · Colegio Genios Traviesos
+    </div>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- Top bar -->
+    <header
+      class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur-md"
+    >
+      <div class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <div class="flex min-w-0 items-center gap-3">
+          <button
+            type="button"
+            class="inline-flex rounded-xl border border-slate-200 bg-white p-2 text-slate-600 lg:hidden"
+            aria-label="Menú"
+          >
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-width="1.8" d="M4 7h16M4 12h16M4 17h10" />
+            </svg>
+          </button>
+          <div class="min-w-0">
+            <p class="truncate font-display text-base font-semibold text-slate-900">
+              Sistema Inteligente Drop Off
+            </p>
+            <p class="truncate text-xs text-slate-500">Centro de monitoreo institucional</p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div
+            class="flex items-center gap-2 rounded-full border px-3 py-1 text-xs"
+            [ngClass]="
+              demo.conexionEstable()
+                ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                : 'border-amber-200 bg-amber-50 text-amber-900'
+            "
+          >
+            <span
+              class="h-2 w-2 rounded-full"
+              [ngClass]="demo.conexionEstable() ? 'animate-pulse-soft bg-emerald-500' : 'bg-amber-500'"
+            ></span>
+            {{ demo.conexionEstable() ? 'Conexión estable' : 'Reconectando…' }}
+          </div>
+
+          <div
+            class="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 sm:flex"
+          >
+            <span class="h-2 w-2 rounded-full bg-brand-500"></span>
+            Sesión activa
+          </div>
+
+          <div
+            class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-800"
+          >
+            Acceso autorizado
+          </div>
+
+          <div class="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-1.5 shadow-sm">
+            <div class="text-right">
+              <p class="text-xs text-slate-500">Usuario activo</p>
+              <p class="max-w-[140px] truncate text-sm font-semibold text-slate-900">
+                {{ auth.nombreUsuario() }}
+              </p>
+            </div>
+            <div
+              class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-xs font-bold text-white"
+            >
+              {{ auth.nombreUsuario().charAt(0) || 'U' }}
+            </div>
+            <button
+              type="button"
+              (click)="cerrarSesion()"
+              class="rounded-lg border border-slate-200 px-2 py-1 text-[11px] font-semibold text-slate-600 hover:bg-slate-50"
+            >
+              Salir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile nav -->
+      <div class="flex gap-1 overflow-x-auto border-t border-slate-100 px-2 py-2 lg:hidden">
+        @for (item of nav; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="bg-brand-50 text-brand-800"
+            class="whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600"
+          >
+            {{ item.label }}
+          </a>
+        }
+      </div>
+    </header>
+
+    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+      <router-outlet />
+    </main>
+
+    <footer class="border-t border-slate-200/80 bg-white/70 px-4 py-3 text-center text-[11px] text-slate-500 sm:text-xs">
+      © {{ clock() | date: 'yyyy' }} Colegio Genios Traviesos · Centro de monitoreo
+      {{ clock() | date: "EEEE d MMM yyyy HH:mm" }}
+    </footer>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="mx-auto max-w-3xl space-y-6 animate-fade-in">
+  <div>
+    <h2 class="font-display text-2xl font-semibold text-slate-900">Configuración del sistema</h2>
+    <p class="text-sm text-slate-500">
+      Parámetros operativos del puesto de monitoreo. Los cambios se aplican en esta sesión.
+    </p>
+  </div>
+
+  <div class="space-y-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-card">
+    <div class="flex items-center justify-between gap-4 border-b border-slate-100 pb-4">
+      <div>
+        <p class="text-sm font-semibold text-slate-900">Tiempo máximo permitido en zona</p>
+        <p class="text-xs text-slate-500">Umbral de permanencia antes de alerta en zona (4 minutos).</p>
+      </div>
+      <span class="rounded-full bg-brand-50 px-3 py-1 text-sm font-bold text-brand-800">
+        {{ config.tiempoMaxMinutos() }} min
+      </span>
+    </div>
+
+    <div class="space-y-3">
+      <p class="text-sm font-semibold text-slate-900">Estado de cámaras</p>
+      <label class="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2">
+        <span class="text-sm text-slate-700">Cámara Norte activa</span>
+        <input type="checkbox" class="h-4 w-4 accent-brand-600" [ngModel]="config.camaraNorteActiva()" (ngModelChange)="config.camaraNorteActiva.set($event)" />
+      </label>
+      <label class="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2">
+        <span class="text-sm text-slate-700">Cámara Sur activa</span>
+        <input type="checkbox" class="h-4 w-4 accent-brand-600" [ngModel]="config.camaraSurActiva()" (ngModelChange)="config.camaraSurActiva.set($event)" />
+      </label>
+    </div>
+
+    <div class="border-t border-slate-100 pt-4">
+      <label class="flex flex-col gap-2">
+        <span class="text-sm font-semibold text-slate-900">Sensibilidad IA (ajuste)</span>
+        <span class="text-xs text-slate-500">Umbral de sensibilidad del pipeline de análisis en este puesto.</span>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          [ngModel]="config.sensibilidadIa()"
+          (ngModelChange)="config.setSensibilidad($event)"
+          class="accent-brand-600"
+        />
+        <span class="text-xs font-medium text-brand-800">{{ config.sensibilidadIa() }} / 100</span>
+      </label>
+    </div>
+
+    <div class="border-t border-slate-100 pt-4">
+      <label class="flex items-center justify-between rounded-xl border border-slate-200 px-3 py-2">
+        <span class="text-sm text-slate-700">Activar notificaciones automáticas</span>
+        <input
+          type="checkbox"
+          class="h-4 w-4 accent-brand-600"
+          [ngModel]="config.notificacionesActivas()"
+          (ngModelChange)="config.notificacionesActivas.set($event)"
+        />
+      </label>
+    </div>
+  </div>
+</div>
