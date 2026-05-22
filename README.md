@@ -1,59 +1,43 @@
-# DropOffDemo
+# Sistema Inteligente Drop Off — Demo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+Demostración web del **monitoreo del área Drop Off** del **Colegio Genios Traviesos**. Todo corre en el navegador con datos de ejemplo (sin backend real).
 
-## Development server
+## ¿De qué se trata?
 
-To start a local development server, run:
+- **Dashboard** con indicadores del día.
+- **Monitoreo en vivo**: cámaras, vehículos en zona, tiempos de permanencia y escenarios operativos (lluvia, congestión, patente sin registrar, etc.).
+- **Apoderados**: registro de patentes autorizadas.
+- **Infracciones** e **eventos operacionales**.
+- **Configuración** del puesto de monitoreo.
 
-```bash
-ng serve
-```
+El login acepta cualquier usuario y contraseña; sirve solo para entrar a la interfaz.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requisitos
 
-## Code scaffolding
+- [Node.js](https://nodejs.org/) 18 o superior (recomendado LTS)
+- npm (viene con Node)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Clonar y ejecutar
 
 ```bash
-ng generate --help
+git clone <URL-del-repositorio>
+cd Demo-Drop-Off
+npm install
+npm start
 ```
 
-## Building
+Abre en el navegador: **http://localhost:4200**
 
-To build the project run:
+Para compilar sin levantar el servidor:
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Nota sobre los videos de cámaras
 
-## Running unit tests
+Opcional: coloca archivos MP4 en `public/videos/camaras/` (por ejemplo `camaraNorte.mp4` y `camara-sur.mp4`). Si no están, la pantalla de monitoreo muestra el aviso de señal no disponible; el resto de la demo funciona igual.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Tecnología
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Angular 19 · TypeScript · Tailwind CSS
