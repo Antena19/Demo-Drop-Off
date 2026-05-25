@@ -17,7 +17,7 @@ export class MonitoreoComponent {
   readonly config = inject(ConfigService);
 
   readonly videoNorteSrc = 'videos/camaras/camaraNorte.mp4';
-  readonly videoSurSrc = 'videos/camaras/camara-sur.mp4';
+  readonly videoSurSrc = 'videos/camaras/camaraSur.mp4';
 
   readonly errorVideoNorte = signal(false);
   readonly errorVideoSur = signal(false);

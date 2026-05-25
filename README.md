@@ -36,7 +36,7 @@ npm run build
 
 ## Nota sobre los videos de cámaras
 
-Opcional: coloca archivos MP4 en `public/videos/camaras/` (por ejemplo `camaraNorte.mp4` y `camara-sur.mp4`). Si no están, la pantalla de monitoreo muestra el aviso de señal no disponible; el resto de la demo funciona igual.
+Los videos van en `public/videos/camaras/`: `camaraNorte.mp4` y `camaraSur.mp4`. En monitoreo se reproducen en bucle (silenciados). Si falta alguno, esa cámara muestra señal no disponible.
 
 ## Tecnología
 
